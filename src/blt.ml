@@ -42,7 +42,7 @@ let check_preferences prefs =
     else ()
 
 let check_ballot_size max_size ballot =
-  if max_size > Array.length ballot.ballot_preferences
+  if max_size < Array.length ballot.ballot_preferences
   then raise (Too_many_preferences ballot.ballot_preferences)
   else ()
 
