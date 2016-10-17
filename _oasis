@@ -1,0 +1,14 @@
+OASISFormat: 0.4
+Name:        stvtools
+Version:     0.1
+Synopsis:    An implementation of STV
+Authors:     Martin Keegan
+License:     Apache-2.0
+Plugins:     META (0.4)
+
+Executable stvelect
+  Path:       src
+  BuildTools: ocamlbuild
+  MainIs:     main.ml
+  BuildDepends: str
+  
