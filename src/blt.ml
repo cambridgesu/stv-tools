@@ -85,12 +85,14 @@ let handle_line line = function
                    check_preferences ballot.ballot_preferences;
                    Voting (candidates, seats, [ballot])
        )
+
   | Candidate_names (candidates, seats, ballots, names) ->
      let new_name = extract_name line in
        if array_mem new_name names
        then raise (Duplicate_candidate_name new_name)
        else Candidate_names (candidates, seats, ballots,
                              Array.append names [| new_name |])
+
        
 let check_constitency = function
   | Candidate_names (candidates, seats, ballots, names) ->
