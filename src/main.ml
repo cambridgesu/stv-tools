@@ -9,6 +9,6 @@ let run () =
       done
     with
       End_of_file -> ());
-    Blt.check_constitency !blt_context
+    Blt.check_consistency !blt_context
         
 let _ = run ()

@@ -94,7 +94,7 @@ let handle_line line = function
                              Array.append names [| new_name |])
 
        
-let check_constitency = function
+let check_consistency = function
   | Candidate_names (candidates, seats, ballots, names) ->
      let check_size = check_ballot_size candidates in
        if candidates <= seats
