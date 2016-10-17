@@ -99,5 +99,7 @@ let check_consistency = function
      let check_size = check_ballot_size candidates in
        if candidates <= seats
        then failwith "Enough seats for all candidates; no need for election"
-       else ballots |> List.iter check_size
+       else if Array.length names <> candidates
+            then failwith "Number of candidates doesn't match names"
+            else ballots |> List.iter check_size
   | _ -> raise Incomplete
