@@ -10,8 +10,7 @@ let run () =
                       process_blt_file new_ctx
         | None -> ctx
   in
-    let tally = Blt.create_context () |> process_blt_file in
-      Blt.check_consistency tally;
-      print_endline "DONE"
+    Blt.create_context () |> process_blt_file |> Blt.check_consistency;
+    print_endline "DONE"
         
 let _ = run ()
