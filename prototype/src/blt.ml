@@ -1,8 +1,5 @@
 
-type ballot = {
-  ballot_weight : int;
-  ballot_preferences : int array
-}
+open Types
 
 type blt_ctx =
   | No_header
