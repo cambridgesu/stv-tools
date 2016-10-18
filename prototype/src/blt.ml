@@ -100,3 +100,32 @@ let check_consistency = function
             then failwith "Number of candidates doesn't match names"
             else ballots |> List.iter check_size
   | _ -> raise Incomplete
+
+let process_blt_file input_stream ctx =
+  let rec process_blt_file ctx =
+    let line =
+      try Some (input_line input_stream)
+      with End_of_file -> None
+    in
+      match line with
+      | Some l -> let new_ctx = handle_line l ctx in
+                    process_blt_file new_ctx
+      | None -> ctx
+  in
+    process_blt_file ctx
+
+
+let tally_of_context = function
+  | Candidate_names (candidates, seats, ballots, names) ->
+     {
+       total_candidates = candidates;
+       total_seats = seats;
+       candidate_names = names;
+       ballots = ballots;
+     }
+  | _ -> raise Incomplete
+
+let tally_of_blt_stream input_stream =
+  let ctx = create_context () |> process_blt_file input_stream in
+    check_consistency ctx;
+    tally_of_context ctx
