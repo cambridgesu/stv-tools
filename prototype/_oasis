@@ -11,4 +11,3 @@ Executable stvelect
   BuildTools: ocamlbuild
   MainIs:     main.ml
   BuildDepends: str
-  
