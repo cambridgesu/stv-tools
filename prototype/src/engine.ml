@@ -30,11 +30,13 @@ module Stage : sig
 end =
 struct
   type t = {
-    x : int
+    x : int;
+    previous : t list;
   }
 
   let example = {
-    x = 3
+    x = 3;
+    previous = [];
   }
 
   let initial whatever =
