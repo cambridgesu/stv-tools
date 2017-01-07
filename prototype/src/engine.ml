@@ -14,6 +14,9 @@ some of the key invariants are:
   the number of continuing candidates is strictly more than the number of
   seats remaining unfilled
 
+  the number of votes a non-eliminated candidate has cannot decrease; the
+  number of votes an elected candidate has cannot increase
+
 *)
 open Types
 
