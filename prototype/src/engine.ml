@@ -17,6 +17,10 @@ some of the key invariants are:
   the number of votes a non-eliminated candidate has cannot decrease; the
   number of votes an elected candidate has cannot increase
 
+  candidates can only change from continuing to elected or eliminated
+
+  the quantities of initial votes for each candidate are integers
+
 *)
 open Types
 
