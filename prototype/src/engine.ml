@@ -39,11 +39,13 @@ struct
   type t = {
     x : int;
     previous : t list;
+    elected_candidates : int;
   }
 
   let example = {
     x = 3;
     previous = [];
+    elected_candidates = 0;
   }
 
   let initial whatever =
