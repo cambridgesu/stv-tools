@@ -10,4 +10,4 @@ Executable stvelect
   Path:       src
   BuildTools: ocamlbuild
   MainIs:     main.ml
-  BuildDepends: str
+  BuildDepends: str,oUnit
