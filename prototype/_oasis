@@ -11,3 +11,11 @@ Executable stvelect
   BuildTools: ocamlbuild
   MainIs:     main.ml
   BuildDepends: str,oUnit
+
+Executable test_stv
+  Path:         src
+  MainIs:       test_stv.ml
+  Custom:       true
+  Install:      false
+  BuildTools:   ocamlbuild
+  BuildDepends: oUnit
