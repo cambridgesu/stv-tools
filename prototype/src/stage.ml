@@ -22,32 +22,23 @@ some of the key invariants are:
   the quantities of initial votes for each candidate are integers
 
 *)
-open Types
 
-module Stage : sig
-  type t
-  val initial : tally -> t
-  val next : t -> Event.t -> t
-end =
-struct
-  type t = {
-    x : int;
-    previous : t list;
-    elected_candidates : int;
-  }
+type t = {
+  x : int;
+  previous : t list;
+  elected_candidates : int;
+}
 
-  let example = {
-    x = 3;
-    previous = [];
-    elected_candidates = 0;
-  }
+let example = {
+  x = 3;
+  previous = [];
+  elected_candidates = 0;
+}
 
-  let initial whatever =
-    example
+let initial whatever =
+  example
 
-  let next old_stage event = old_stage
+let next old_stage event = old_stage
 
-  let consistent stage =
-    true
-
-end
+let consistent stage =
+  true
