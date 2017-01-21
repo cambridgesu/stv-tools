@@ -10,15 +10,22 @@ exception Invalid_stop_code
 exception Duplicate_candidate_name of string
 exception Incomplete
 
-let int_array_of_string s =
-  List.map int_of_string (Str.split (Str.regexp " ") s) |> Array.of_list
+module Line_of_numbers : sig
 
-let safe_int_array_of_string s =
-  let values =
-    try int_array_of_string s
-    with Failure _ -> raise Only_ints
-  in
-    values
+  val safe_array : string -> int array
+
+end = struct
+
+  let int_array_of_string s =
+    List.map int_of_string (Str.split (Str.regexp " ") s) |> Array.of_list
+
+  let safe_array s =
+    let values =
+      try int_array_of_string s
+      with Failure _ -> raise Only_ints
+    in
+      values
+end
 
 let extract_name line =
   let len = String.length line in
@@ -37,7 +44,7 @@ type blt_ctx =
 let create_context () = No_header
 
 let handle_header line =
-  let values = safe_int_array_of_string line in
+  let values = Line_of_numbers.safe_array line in
     (match values with
     | [| candidates ; seats |] ->
        let contest = Contest.create candidates seats in
@@ -45,7 +52,7 @@ let handle_header line =
     | _ -> raise Invalid_header)
 
 let handle_vote contest ballots line =
-  let values = safe_int_array_of_string line in
+  let values = Line_of_numbers.safe_array line in
   let len = Array.length values in
     (match len with
     | 0 -> raise Empty_line
