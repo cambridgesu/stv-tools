@@ -106,8 +106,7 @@ let process_blt_file input_stream ctx =
       with End_of_file -> None
     in
       match line with
-      | Some l -> let new_ctx = handle_line l ctx in
-                    process_blt_file new_ctx
+      | Some l -> handle_line l ctx |> process_blt_file
       | None -> ctx
   in
     process_blt_file ctx
