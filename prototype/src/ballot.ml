@@ -14,7 +14,7 @@ let rec no_duplicates = function
      then false
      else no_duplicates tl
 
-let check_preferences prefs =
+let check_preferences contest prefs =
   prefs |> Array.iter (
     fun pref -> if pref < 1 then raise (Non_positive_pref pref) else ()
   );
@@ -22,8 +22,8 @@ let check_preferences prefs =
   then ()
   else raise Duplicate_prefs
 
-let create weight prefs =
-  check_preferences prefs;
+let create contest weight prefs =
+  check_preferences contest prefs;
   {
     ballot_weight = weight;
     ballot_preferences = prefs

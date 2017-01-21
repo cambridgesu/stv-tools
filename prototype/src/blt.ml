@@ -59,7 +59,7 @@ let handle_vote contest ballots line =
          then raise No_zero_terminator
          else let weight = values.(0) in
               let prefs = (Array.sub values 1 (len - 2)) in
-              let ballot = Ballot.create weight prefs in
+              let ballot = Ballot.create contest weight prefs in
                 Voting (contest, ballot :: ballots)
     )
 
