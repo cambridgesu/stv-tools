@@ -34,7 +34,7 @@ Links
 Installation
 ============
 
-    $ (cd reference; oasis setup; ocaml setup.ml -build)
+    $ (cd reference && oasis setup && ocaml setup.ml -build)
     $ reference/test_stv.byte --dir test_data
     $ reference/main.byte < test_data/example.blt
 
