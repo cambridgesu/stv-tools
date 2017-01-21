@@ -2,10 +2,36 @@
 open Ballot
 open Tally
 
+module Header : sig
+  type t
+
+  val create : int -> int -> t
+  val get_totals : t -> int * int
+
+end = struct
+  type t = {
+    header_candidates : int;
+    header_seats : int;
+  }
+
+  let create candidates seats = 
+    assert (candidates > 0);
+    assert (seats > 0);
+    assert (candidates > seats);
+    {
+      header_candidates = candidates;
+      header_seats = seats
+    }
+
+  let get_totals h =
+    (h.header_candidates, h.header_seats)
+
+end
+
 type blt_ctx =
   | No_header
-  | Voting of int * int * Ballot.t list
-  | Candidate_names of int * int * Ballot.t list * string array
+  | Voting of Header.t * Ballot.t list
+  | Candidate_names of Header.t * Ballot.t list * string array
 
 exception Only_ints (* string must be space separated ints *)
 exception Invalid_header (* not two ints *)
@@ -39,17 +65,19 @@ let handle_line line line_no = function
   | No_header ->
      let values = safe_int_array_of_string line in
        (match values with
-       | [| hd ; tl |] -> Voting (hd, tl, [])
+       | [| candidates ; seats |] ->
+          let header = Header.create candidates seats in
+            Voting (header, [])
        | _ -> raise Invalid_header)
 
-  | Voting (candidates, seats, ballots) ->
+  | Voting (header, ballots) ->
      let values = safe_int_array_of_string line in
      let len = Array.length values in
        (match len with
        | 0 -> raise Empty_line
        | 1 ->
           if values.(0) = 0
-          then Candidate_names (candidates, seats, ballots, [||])
+          then Candidate_names (header, ballots, [||])
           else raise Invalid_stop_code
        | _ ->
           let final = values.(len - 1) in
@@ -57,14 +85,14 @@ let handle_line line line_no = function
             then raise No_zero_terminator
             else let ballot = Ballot.create values.(0) (Array.sub values 1 (len - 2))
                     in
-                   Voting (candidates, seats, [ballot])
+                   Voting (header, [ballot])
        )
 
-  | Candidate_names (candidates, seats, ballots, names) ->
+  | Candidate_names (header, ballots, names) ->
      let new_name = extract_name line in
        if Utils.array_mem new_name names
        then raise (Duplicate_candidate_name new_name)
-       else Candidate_names (candidates, seats, ballots,
+       else Candidate_names (header, ballots,
                              Array.append names [| new_name |])
 
 let abend line_no s =
@@ -90,8 +118,9 @@ let process_blt_file input_stream ctx =
 
 let tally_of_context ctx = 
   match ctx with
-  | Candidate_names (candidates, seats, ballots, names) ->
-     Tally.create candidates seats ballots names
+  | Candidate_names (header, ballots, names) ->
+     let candidates, seats = Header.get_totals header in
+       Tally.create candidates seats ballots names
   | _ -> raise Incomplete
 
 let tally_of_blt_stream input_stream =
