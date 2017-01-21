@@ -39,4 +39,4 @@ let dump tally =
   List.iteri (fun i name -> Printf.printf " %d. %s\n" (i + 1) name)
     tally.candidate_names;
 
-  List.iter Ballot.dump tally.ballots
+  List.iter (fun b -> Ballot.dump_named tally.candidate_names b) tally.ballots
