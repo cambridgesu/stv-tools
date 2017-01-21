@@ -6,6 +6,7 @@ type t = {
 
 exception Duplicate_prefs
 exception Non_positive_pref of int
+exception No_such_candidate of int
 
 let rec no_duplicates = function
   | [] -> true
@@ -15,12 +16,19 @@ let rec no_duplicates = function
      else no_duplicates tl
 
 let check_preferences contest prefs =
-  prefs |> Array.iter (
-    fun pref -> if pref < 1 then raise (Non_positive_pref pref) else ()
-  );
-  if no_duplicates (Array.to_list prefs)
-  then ()
-  else raise Duplicate_prefs
+  let max_candidate, _ = Contest.get_totals contest in
+    prefs |> Array.iter (
+      fun pref -> if pref > max_candidate then raise (No_such_candidate pref)
+          else ()
+    );
+
+    prefs |> Array.iter (
+      fun pref -> if pref < 1 then raise (Non_positive_pref pref) else ()
+    );
+
+    if no_duplicates (Array.to_list prefs)
+    then ()
+    else raise Duplicate_prefs
 
 let create contest weight prefs =
   check_preferences contest prefs;
