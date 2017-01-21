@@ -12,8 +12,6 @@ exception Invalid_header (* not two ints *)
 exception No_zero_terminator
 exception Empty_line
 exception Invalid_stop_code
-exception Non_positive_pref of int
-exception Non_consecutive_prefs
 exception Duplicate_candidate_name of string
 exception Incomplete
 
@@ -26,17 +24,6 @@ let safe_int_array_of_string s =
     with Failure _ -> raise Only_ints
   in
     values
-
-let check_preferences prefs =
-  prefs |> Array.iter (
-    fun pref -> if pref < 1 then raise (Non_positive_pref pref) else ()
-  );
-  let sorted = Array.to_list prefs |> List.sort compare |> Array.of_list in
-  let len = Array.length prefs in
-  let last_pref = sorted.(len - 1) in
-    if last_pref <> len
-    then raise Non_consecutive_prefs
-    else ()
 
 let extract_name line =
      let len = String.length line in
@@ -68,11 +55,8 @@ let handle_line line line_no = function
           let final = values.(len - 1) in
             if final <> 0
             then raise No_zero_terminator
-            else let ballot = {
-                   ballot_weight = values.(0);
-                   ballot_preferences = Array.sub values 1 (len - 2)
-                 } in
-                   check_preferences ballot.ballot_preferences;
+            else let ballot = Ballot.create values.(0) (Array.sub values 1 (len - 2))
+                    in
                    Voting (candidates, seats, [ballot])
        )
 

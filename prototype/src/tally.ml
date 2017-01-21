@@ -7,11 +7,11 @@ type t = {
   ballots : Ballot.t list;
 }
 
-exception Too_many_preferences of int array
+exception Too_many_preferences of Ballot.t
 
 let check_ballot_size max_size ballot =
-  if max_size < Array.length ballot.ballot_preferences
-  then raise (Too_many_preferences ballot.ballot_preferences)
+  if max_size < (Ballot.total_preferences ballot)
+  then raise (Too_many_preferences ballot)
   else ()
 
 let check_consistency candidates seats ballots names =
