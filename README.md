@@ -29,4 +29,12 @@ being counted or against the machine being used to do so.
 Links
 =====
 
-* BLT files
+* BLT files (link todo)
+
+Installation
+============
+
+    $ (cd reference; oasis setup; ocaml setup.ml -build)
+    $ reference/test_stv.byte --dir test_data
+    $ reference/main.byte < test_data/example.blt
+
