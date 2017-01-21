@@ -92,8 +92,7 @@ let handle_name header ballots names line =
   let new_name = extract_name line in
     if Utils.array_mem new_name names
     then raise (Duplicate_candidate_name new_name)
-    else Candidate_names (header, ballots,
-                          Array.append names [| new_name |])
+    else Candidate_names (header, ballots, Array.append names [| new_name |])
 
 let handle_line line = function
   | No_header -> handle_header line
