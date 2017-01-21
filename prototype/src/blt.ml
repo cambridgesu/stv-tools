@@ -10,6 +10,11 @@ exception Duplicate_candidate_name of string
 exception Incomplete
 
 
+let abend line_no s =
+  print_endline s;
+  Printf.printf "Error occurred at input line %d\n" line_no;
+  exit 1
+
 let extract_name line =
   let len = String.length line in
     if len < 2
@@ -63,11 +68,6 @@ let handle_line line = function
   | No_header -> handle_header line
   | Voting (hdr, ballots) -> handle_vote hdr ballots line
   | Candidate_names (hdr, ballots, names) -> handle_name hdr ballots names line
-
-let abend line_no s =
-  print_endline s;
-  Printf.printf "Error occurred at input line %d\n" line_no;
-  exit 1
 
 let process_blt_file input_stream =
   let initial_ctx = create_context () in
