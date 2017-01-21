@@ -39,18 +39,18 @@ let handle_header line =
   let values = safe_int_array_of_string line in
     (match values with
     | [| candidates ; seats |] ->
-       let header = Contest.create candidates seats in
-         Voting (header, [])
+       let contest = Contest.create candidates seats in
+         Voting (contest, [])
     | _ -> raise Invalid_header)
 
-let handle_vote header ballots line =
+let handle_vote contest ballots line =
   let values = safe_int_array_of_string line in
   let len = Array.length values in
     (match len with
     | 0 -> raise Empty_line
     | 1 ->
        if values.(0) = 0
-       then Candidate_names (header, ballots, [||])
+       then Candidate_names (contest, ballots, [||])
        else raise Invalid_stop_code
     | _ ->
        let final = values.(len - 1) in
@@ -59,14 +59,14 @@ let handle_vote header ballots line =
          else let weight = values.(0) in
               let prefs = (Array.sub values 1 (len - 2)) in
               let ballot = Ballot.create weight prefs in
-                Voting (header, ballot :: ballots)
+                Voting (contest, ballot :: ballots)
     )
 
-let handle_name header ballots names line =
+let handle_name contest ballots names line =
   let new_name = extract_name line in
     if Utils.array_mem new_name names
     then raise (Duplicate_candidate_name new_name)
-    else Candidate_names (header, ballots, Array.append names [| new_name |])
+    else Candidate_names (contest, ballots, Array.append names [| new_name |])
 
 let handle_line line = function
   | No_header -> handle_header line
@@ -96,8 +96,8 @@ let process_blt_file input_stream ctx =
 
 let tally_of_context ctx =
   match ctx with
-  | Candidate_names (header, ballots, names) ->
-     Tally.create header ballots names
+  | Candidate_names (contest, ballots, names) ->
+     Tally.create contest ballots names
   | _ -> raise Incomplete
 
 let tally_of_blt_stream input_stream =

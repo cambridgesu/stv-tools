@@ -22,8 +22,8 @@ let check_consistency candidates seats ballots names =
     then failwith "Number of candidates doesn't match names"
     else ballots |> List.iter check_size
 
-let create header ballots names =
-  let candidates, seats = Contest.get_totals header in
+let create contest ballots names =
+  let candidates, seats = Contest.get_totals contest in
     check_consistency candidates seats ballots names;
     {
       total_candidates = candidates;
