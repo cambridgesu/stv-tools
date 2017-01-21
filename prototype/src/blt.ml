@@ -2,7 +2,6 @@
 open Ballot
 open Tally
 
-exception Only_ints (* string must be space separated ints *)
 exception Invalid_header (* not two ints *)
 exception No_zero_terminator
 exception Empty_line
@@ -10,27 +9,6 @@ exception Invalid_stop_code
 exception Duplicate_candidate_name of string
 exception Incomplete
 
-module Line_of_numbers : sig
-
-  val safe_array : string -> int array
-  val list_without_ends : 'a array -> 'a list
-
-end = struct
-
-  let int_array_of_string s =
-    List.map int_of_string (Str.split (Str.regexp " ") s) |> Array.of_list
-
-  let safe_array s =
-    let values =
-      try int_array_of_string s
-      with Failure _ -> raise Only_ints
-    in
-      values
-
-  let list_without_ends aa =
-    Array.sub aa 1 (Array.length aa - 2) |> Array.to_list
-
-end
 
 let extract_name line =
   let len = String.length line in
