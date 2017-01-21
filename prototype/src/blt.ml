@@ -16,7 +16,6 @@ exception Non_positive_pref of int
 exception Non_consecutive_prefs
 exception Duplicate_candidate_name of string
 exception Incomplete
-exception Too_many_preferences of int array
 
 let int_array_of_string s =
   List.map int_of_string (Str.split (Str.regexp " ") s) |> Array.of_list
@@ -38,11 +37,6 @@ let check_preferences prefs =
     if last_pref <> len
     then raise Non_consecutive_prefs
     else ()
-
-let check_ballot_size max_size ballot =
-  if max_size < Array.length ballot.ballot_preferences
-  then raise (Too_many_preferences ballot.ballot_preferences)
-  else ()
 
 let extract_name line =
      let len = String.length line in
@@ -89,19 +83,6 @@ let handle_line line line_no = function
        else Candidate_names (candidates, seats, ballots,
                              Array.append names [| new_name |])
 
-let check_tally_consistency candidates seats ballots names =
-     let check_size = check_ballot_size candidates in
-       if candidates <= seats
-       then failwith "Enough seats for all candidates; no need for election"
-       else if Array.length names <> candidates
-            then failwith "Number of candidates doesn't match names"
-            else ballots |> List.iter check_size
-
-let check_consistency = function
-  | Candidate_names (candidates, seats, ballots, names) ->
-     check_tally_consistency candidates seats ballots names
-  | _ -> raise Incomplete
-
 let abend line_no s =
   print_endline s;
   Printf.printf "Error occurred at input line %d\n" line_no;
@@ -123,17 +104,10 @@ let process_blt_file input_stream ctx =
   in
     process_blt_file 1 ctx
 
-
 let tally_of_context ctx = 
-  check_consistency ctx;
   match ctx with
   | Candidate_names (candidates, seats, ballots, names) ->
-     {
-       total_candidates = candidates;
-       total_seats = seats;
-       candidate_names = names;
-       ballots = ballots;
-     }
+     Tally.create candidates seats ballots names
   | _ -> raise Incomplete
 
 let tally_of_blt_stream input_stream =
