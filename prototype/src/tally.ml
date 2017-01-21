@@ -28,6 +28,13 @@ let create contest ballots names =
     {
       total_candidates = candidates;
       total_seats = seats;
-      candidate_names = names;
+      candidate_names = List.rev names;
       ballots = ballots;
     }
+
+let dump tally =
+  Printf.printf "Seats: %d; Candidates: %d\n\nCandidate names:\n"
+    tally.total_seats tally.total_candidates;
+
+  List.iteri (fun i name -> Printf.printf " %d. %s\n" (i + 1) name)
+    tally.candidate_names
