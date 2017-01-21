@@ -9,8 +9,11 @@ let get_file filename =
 let test_lon () =
   let src = "1 2 3 4" in
   let obs = Line_of_numbers.safe_array src in
-    assert_equal [|1;2;3;4|] obs
-  
+    assert_equal [|1; 2; 3; 4|] obs;
+
+  let obs' = Line_of_numbers.list_without_ends obs in
+    assert_equal [2; 3] obs'
+
 let suite =
   "test stv" >:::
     [
