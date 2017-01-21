@@ -2,11 +2,6 @@
 open Ballot
 open Tally
 
-type blt_ctx =
-  | No_header
-  | Voting of Contest.t * Ballot.t list
-  | Candidate_names of Contest.t * Ballot.t list * string list
-
 exception Only_ints (* string must be space separated ints *)
 exception Invalid_header (* not two ints *)
 exception No_zero_terminator
@@ -32,6 +27,12 @@ let extract_name line =
     else if line.[0] = '"' && line.[len - 1] = '"'
     then String.sub line 1 (len - 2)
     else line
+
+
+type blt_ctx =
+  | No_header
+  | Voting of Contest.t * Ballot.t list
+  | Candidate_names of Contest.t * Ballot.t list * string list
 
 let create_context () = No_header
 
