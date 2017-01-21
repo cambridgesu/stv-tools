@@ -22,11 +22,12 @@ let check_consistency candidates seats ballots names =
     then failwith "Number of candidates doesn't match names"
     else ballots |> List.iter check_size
 
-let create candidates seats ballots names =
-  check_consistency candidates seats ballots names;
-  {
-    total_candidates = candidates;
-    total_seats = seats;
-    candidate_names = names;
-    ballots = ballots;
-  }
+let create header ballots names =
+  let candidates, seats = Header.get_totals header in
+    check_consistency candidates seats ballots names;
+    {
+      total_candidates = candidates;
+      total_seats = seats;
+      candidate_names = names;
+      ballots = ballots;
+    }
