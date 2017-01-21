@@ -1,6 +1,4 @@
 
-open Types
-
 type t
 
 val initial : Tally.t -> t
