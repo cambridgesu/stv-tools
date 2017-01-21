@@ -69,10 +69,7 @@ let handle_header line =
          Voting (header, [])
     | _ -> raise Invalid_header)
 
-let handle_line line line_no = function
-  | No_header -> handle_header line
-
-  | Voting (header, ballots) ->
+let handle_vote line header ballots =
      let values = safe_int_array_of_string line in
      let len = Array.length values in
        (match len with
@@ -90,6 +87,12 @@ let handle_line line line_no = function
                  let ballot = Ballot.create weight prefs in
                    Voting (header, ballot :: ballots)
        )
+
+
+let handle_line line line_no = function
+  | No_header -> handle_header line
+
+  | Voting (header, ballots) -> handle_vote line header ballots
 
   | Candidate_names (header, ballots, names) ->
      let new_name = extract_name line in
