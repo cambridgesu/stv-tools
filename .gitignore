@@ -8,3 +8,4 @@ setup.ml
 *.bak
 vote_data/
 oUnit-anon.cache
+.todo
