@@ -53,7 +53,7 @@ let extract_name line =
 
 let create_context () = No_header
 
-let handle_line line = function
+let handle_line line line_no = function
   | No_header ->
      let values = safe_int_array_of_string line in
        (match values with
@@ -100,16 +100,17 @@ let check_consistency = function
   | _ -> raise Incomplete
 
 let process_blt_file input_stream ctx =
-  let rec process_blt_file ctx =
+  let rec process_blt_file line_no ctx =
     let line =
       try Some (input_line input_stream)
       with End_of_file -> None
     in
-      match line with
-      | Some l -> handle_line l ctx |> process_blt_file
-      | None -> ctx
+      let line_no' = line_no + 1 in
+        match line with
+        | Some l -> handle_line l line_no' ctx |> process_blt_file line_no'
+        | None -> ctx
   in
-    process_blt_file ctx
+    process_blt_file 1 ctx
 
 
 let tally_of_context = function
