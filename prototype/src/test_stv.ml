@@ -2,13 +2,19 @@ open OUnit
 
 let blt_dir = ref "."
 
-let test_x () =
-  assert_equal true false
+let get_file filename =
+  let path = !blt_dir ^ "/" ^ filename in
+    open_in path
 
+let test_lon () =
+  let src = "1 2 3 4" in
+  let obs = Line_of_numbers.safe_array src in
+    assert_equal [|1;2;3;4|] obs
+  
 let suite =
   "test stv" >:::
     [
-      "test thing" >:: test_x
+      "test line of numbers" >:: test_lon;
     ]
 
 let run () = run_test_tt_main suite
