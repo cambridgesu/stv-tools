@@ -52,12 +52,12 @@ let safe_int_array_of_string s =
     values
 
 let extract_name line =
-     let len = String.length line in
-       if len < 2
-       then line
-       else if line.[0] = '"' && line.[len - 1] = '"'
-            then String.sub line 1 (len - 2)
-            else line
+  let len = String.length line in
+    if len < 2
+    then line
+    else if line.[0] = '"' && line.[len - 1] = '"'
+    then String.sub line 1 (len - 2)
+    else line
 
 let create_context () = No_header
 
