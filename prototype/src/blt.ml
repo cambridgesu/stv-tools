@@ -122,7 +122,9 @@ let process_blt_file input_stream ctx =
     process_blt_file 1 ctx
 
 
-let tally_of_context = function
+let tally_of_context ctx = 
+  check_consistency ctx;
+  match ctx with
   | Candidate_names (candidates, seats, ballots, names) ->
      {
        total_candidates = candidates;
@@ -134,5 +136,4 @@ let tally_of_context = function
 
 let tally_of_blt_stream input_stream =
   let ctx = create_context () |> process_blt_file input_stream in
-    check_consistency ctx;
     tally_of_context ctx
