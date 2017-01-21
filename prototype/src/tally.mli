@@ -1,6 +1,6 @@
 
 type t
 
-val create : Header.t -> Ballot.t list -> string array -> t
+val create : Contest.t -> Ballot.t list -> string array -> t
 
 

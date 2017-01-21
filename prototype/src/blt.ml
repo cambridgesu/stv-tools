@@ -4,8 +4,8 @@ open Tally
 
 type blt_ctx =
   | No_header
-  | Voting of Header.t * Ballot.t list
-  | Candidate_names of Header.t * Ballot.t list * string array
+  | Voting of Contest.t * Ballot.t list
+  | Candidate_names of Contest.t * Ballot.t list * string array
 
 exception Only_ints (* string must be space separated ints *)
 exception Invalid_header (* not two ints *)
@@ -39,7 +39,7 @@ let handle_header line =
   let values = safe_int_array_of_string line in
     (match values with
     | [| candidates ; seats |] ->
-       let header = Header.create candidates seats in
+       let header = Contest.create candidates seats in
          Voting (header, [])
     | _ -> raise Invalid_header)
 

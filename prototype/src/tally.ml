@@ -23,7 +23,7 @@ let check_consistency candidates seats ballots names =
     else ballots |> List.iter check_size
 
 let create header ballots names =
-  let candidates, seats = Header.get_totals header in
+  let candidates, seats = Contest.get_totals header in
     check_consistency candidates seats ballots names;
     {
       total_candidates = candidates;
