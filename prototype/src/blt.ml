@@ -70,24 +70,23 @@ let handle_header line =
     | _ -> raise Invalid_header)
 
 let handle_vote line header ballots =
-     let values = safe_int_array_of_string line in
-     let len = Array.length values in
-       (match len with
-       | 0 -> raise Empty_line
-       | 1 ->
-          if values.(0) = 0
-          then Candidate_names (header, ballots, [||])
-          else raise Invalid_stop_code
-       | _ ->
-          let final = values.(len - 1) in
-            if final <> 0
-            then raise No_zero_terminator
-            else let weight = values.(0) in
-                 let prefs = (Array.sub values 1 (len - 2)) in
-                 let ballot = Ballot.create weight prefs in
-                   Voting (header, ballot :: ballots)
-       )
-
+  let values = safe_int_array_of_string line in
+  let len = Array.length values in
+    (match len with
+    | 0 -> raise Empty_line
+    | 1 ->
+       if values.(0) = 0
+       then Candidate_names (header, ballots, [||])
+       else raise Invalid_stop_code
+    | _ ->
+       let final = values.(len - 1) in
+         if final <> 0
+         then raise No_zero_terminator
+         else let weight = values.(0) in
+              let prefs = (Array.sub values 1 (len - 2)) in
+              let ballot = Ballot.create weight prefs in
+                Voting (header, ballot :: ballots)
+    )
 
 let handle_line line line_no = function
   | No_header -> handle_header line
