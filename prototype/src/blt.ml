@@ -69,7 +69,7 @@ let handle_header line =
          Voting (header, [])
     | _ -> raise Invalid_header)
 
-let handle_vote line header ballots =
+let handle_vote header ballots line =
   let values = safe_int_array_of_string line in
   let len = Array.length values in
     (match len with
@@ -88,7 +88,7 @@ let handle_vote line header ballots =
                 Voting (header, ballot :: ballots)
     )
 
-let handle_name line header ballots names =
+let handle_name header ballots names line =
   let new_name = extract_name line in
     if Utils.array_mem new_name names
     then raise (Duplicate_candidate_name new_name)
@@ -97,8 +97,8 @@ let handle_name line header ballots names =
 
 let handle_line line = function
   | No_header -> handle_header line
-  | Voting (hdr, ballots) -> handle_vote line hdr ballots
-  | Candidate_names (hdr, ballots, names) -> handle_name line hdr ballots names
+  | Voting (hdr, ballots) -> handle_vote hdr ballots line
+  | Candidate_names (hdr, ballots, names) -> handle_name hdr ballots names line
 
 let abend line_no s =
   print_endline s;
