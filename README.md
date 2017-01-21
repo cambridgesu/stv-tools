@@ -34,7 +34,13 @@ Links
 Installation
 ============
 
-    $ (cd reference && oasis setup && ocaml setup.ml -build)
+These instructions assume a pre-installed OCaml system with various
+build-time dependencies already available; instructions for establishing
+this will be provided later.
+
+Having checked out this repository, do:
+
+    $ (cd reference && oasis setup && ocaml setup.ml -configure && ocaml setup.ml -build)
     $ reference/test_stv.byte --dir test_data
     $ reference/main.byte < test_data/example.blt
 
