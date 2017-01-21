@@ -38,4 +38,9 @@ let dump b =
     Printf.printf "  %d: Option %d\n" (i + 1) pref
   ) b.ballot_preferences
 
-let dump_named _ b = dump b
+let dump_named names b =
+  Printf.printf "\nBallot weight: %d\n\n" b.ballot_weight;
+  Array.iteri (fun i pref ->
+    Printf.printf "  %d: %s\n" (i + 1) (List.nth names (pref - 1))
+  ) b.ballot_preferences
+  
