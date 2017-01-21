@@ -14,7 +14,7 @@ end = struct
     header_seats : int;
   }
 
-  let create candidates seats = 
+  let create candidates seats =
     assert (candidates > 0);
     assert (seats > 0);
     assert (candidates > seats);
@@ -116,7 +116,7 @@ let process_blt_file input_stream ctx =
   in
     process_blt_file 1 ctx
 
-let tally_of_context ctx = 
+let tally_of_context ctx =
   match ctx with
   | Candidate_names (header, ballots, names) ->
      let candidates, seats = Header.get_totals header in
@@ -125,4 +125,3 @@ let tally_of_context ctx =
 
 let tally_of_blt_stream input_stream =
   create_context () |> process_blt_file input_stream |> tally_of_context
-
