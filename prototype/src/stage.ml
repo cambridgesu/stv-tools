@@ -24,16 +24,10 @@ some of the key invariants are:
 *)
 open Types
 
-type event =
-  | Elected
-  | Excluded
-  | Distribute_surplus
-  | Distribute_excluded
-
 module Stage : sig
   type t
   val initial : tally -> t
-  val next : t -> event -> t
+  val next : t -> Event.t -> t
 end =
 struct
   type t = {
