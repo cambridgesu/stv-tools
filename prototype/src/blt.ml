@@ -78,7 +78,8 @@ let abend line_no s =
   Printf.printf "Error occurred at input line %d\n" line_no;
   exit 1
 
-let process_blt_file input_stream ctx =
+let process_blt_file input_stream =
+  let initial_ctx = create_context () in
   let rec process_blt_file line_no ctx =
     let line =
       try Some (input_line input_stream)
@@ -92,7 +93,7 @@ let process_blt_file input_stream ctx =
       with
         Non_consecutive_prefs -> abend line_no "Non-consecutive preferences"
   in
-    process_blt_file 1 ctx
+    process_blt_file 1 initial_ctx
 
 let tally_of_context ctx =
   match ctx with
@@ -101,4 +102,4 @@ let tally_of_context ctx =
   | _ -> raise Incomplete
 
 let tally_of_blt_stream input_stream =
-  create_context () |> process_blt_file input_stream |> tally_of_context
+  process_blt_file input_stream |> tally_of_context
