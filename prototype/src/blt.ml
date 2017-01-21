@@ -95,7 +95,7 @@ let handle_name line header ballots names =
     else Candidate_names (header, ballots,
                           Array.append names [| new_name |])
 
-let handle_line line line_no = function
+let handle_line line = function
   | No_header -> handle_header line
   | Voting (hdr, ballots) -> handle_vote line hdr ballots
   | Candidate_names (hdr, ballots, names) -> handle_name line hdr ballots names
@@ -114,7 +114,7 @@ let process_blt_file input_stream ctx =
       try
         let line_no' = line_no + 1 in
           match line with
-          | Some l -> handle_line l line_no' ctx |> process_blt_file line_no'
+          | Some l -> handle_line l ctx |> process_blt_file line_no'
           | None -> ctx
       with
         Non_consecutive_prefs -> abend line_no "Non-consecutive preferences"
