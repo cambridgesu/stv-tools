@@ -5,7 +5,7 @@ open Tally
 type blt_ctx =
   | No_header
   | Voting of Contest.t * Ballot.t list
-  | Candidate_names of Contest.t * Ballot.t list * string array
+  | Candidate_names of Contest.t * Ballot.t list * string list
 
 exception Only_ints (* string must be space separated ints *)
 exception Invalid_header (* not two ints *)
@@ -50,7 +50,7 @@ let handle_vote contest ballots line =
     | 0 -> raise Empty_line
     | 1 ->
        if values.(0) = 0
-       then Candidate_names (contest, ballots, [||])
+       then Candidate_names (contest, ballots, [])
        else raise Invalid_stop_code
     | _ ->
        let final = values.(len - 1) in
@@ -64,9 +64,9 @@ let handle_vote contest ballots line =
 
 let handle_name contest ballots names line =
   let new_name = extract_name line in
-    if Utils.array_mem new_name names
+    if List.mem new_name names
     then raise (Duplicate_candidate_name new_name)
-    else Candidate_names (contest, ballots, Array.append names [| new_name |])
+    else Candidate_names (contest, ballots, new_name :: names)
 
 let handle_line line = function
   | No_header -> handle_header line

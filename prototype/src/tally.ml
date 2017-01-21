@@ -3,7 +3,7 @@ open Ballot
 type t = {
   total_candidates : int;
   total_seats : int;
-  candidate_names : string array;
+  candidate_names : string list;
   ballots : Ballot.t list;
 }
 
@@ -18,7 +18,7 @@ let check_consistency candidates seats ballots names =
   let check_size = check_ballot_size candidates in
     if candidates <= seats
     then failwith "Enough seats for all candidates; no need for election"
-    else if Array.length names <> candidates
+    else if List.length names <> candidates
     then failwith "Number of candidates doesn't match names"
     else ballots |> List.iter check_size
 
