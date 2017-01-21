@@ -97,7 +97,7 @@ let process_blt_file input_stream =
 let tally_of_context ctx =
   match ctx with
   | Candidate_names (contest, ballots, names) ->
-     Tally.create contest ballots names
+     Tally.create contest (List.rev ballots) (List.rev names)
   | _ -> raise Incomplete
 
 let tally_of_blt_stream input_stream =

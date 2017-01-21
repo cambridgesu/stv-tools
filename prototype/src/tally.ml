@@ -28,7 +28,7 @@ let create contest ballots names =
     {
       total_candidates = candidates;
       total_seats = seats;
-      candidate_names = List.rev names;
+      candidate_names = names;
       ballots = ballots;
     }
 
