@@ -1,10 +1,11 @@
 
+open Ballot
 open Types
 
 type blt_ctx =
   | No_header
-  | Voting of int * int * ballot list
-  | Candidate_names of int * int * ballot list * string array
+  | Voting of int * int * Ballot.t list
+  | Candidate_names of int * int * Ballot.t list * string array
 
 exception Only_ints (* string must be space separated ints *)
 exception Invalid_header (* not two ints *)
