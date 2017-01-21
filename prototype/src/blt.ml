@@ -2,32 +2,6 @@
 open Ballot
 open Tally
 
-module Header : sig
-  type t
-
-  val create : int -> int -> t
-  val get_totals : t -> int * int
-
-end = struct
-  type t = {
-    header_candidates : int;
-    header_seats : int;
-  }
-
-  let create candidates seats =
-    assert (candidates > 0);
-    assert (seats > 0);
-    assert (candidates > seats);
-    {
-      header_candidates = candidates;
-      header_seats = seats
-    }
-
-  let get_totals h =
-    (h.header_candidates, h.header_seats)
-
-end
-
 type blt_ctx =
   | No_header
   | Voting of Header.t * Ballot.t list
