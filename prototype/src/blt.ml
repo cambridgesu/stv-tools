@@ -89,7 +89,7 @@ let process_blt_file input_stream =
             match line with
             | Some l -> handle_line l ctx |> process_blt_file line_no'
             | None -> ctx
-      with Non_consecutive_prefs -> abend line_no "Non-consecutive preferences"
+      with _ -> abend line_no "Unspecified error"
   in
     process_blt_file 1 initial_ctx
 
