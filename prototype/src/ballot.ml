@@ -31,3 +31,11 @@ let create weight prefs =
 
 let total_preferences b =
   Array.length b.ballot_preferences
+
+let dump b =
+  Printf.printf "\nBallot weight: %d\n\n" b.ballot_weight;
+  Array.iteri (fun i pref ->
+    Printf.printf "  %d: Option %d\n" (i + 1) pref
+  ) b.ballot_preferences
+
+let dump_named _ b = dump b

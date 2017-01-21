@@ -37,4 +37,6 @@ let dump tally =
     tally.total_seats tally.total_candidates;
 
   List.iteri (fun i name -> Printf.printf " %d. %s\n" (i + 1) name)
-    tally.candidate_names
+    tally.candidate_names;
+
+  List.iter Ballot.dump tally.ballots
