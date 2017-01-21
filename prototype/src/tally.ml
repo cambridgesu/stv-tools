@@ -1,5 +1,5 @@
 
-type tally = {
+type t = {
   total_candidates : int;
   total_seats : int;
   candidate_names : string array;

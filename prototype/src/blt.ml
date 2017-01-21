@@ -1,6 +1,6 @@
 
 open Ballot
-open Types
+open Tally
 
 type blt_ctx =
   | No_header

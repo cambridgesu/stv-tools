@@ -3,6 +3,6 @@ open Types
 
 type t
 
-val initial : tally -> t
+val initial : Tally.t -> t
 
 val next : t -> Event.t -> t
