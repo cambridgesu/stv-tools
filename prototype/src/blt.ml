@@ -83,8 +83,9 @@ let handle_line line line_no = function
           let final = values.(len - 1) in
             if final <> 0
             then raise No_zero_terminator
-            else let ballot = Ballot.create values.(0) (Array.sub values 1 (len - 2))
-                    in
+            else let weight = values.(0) in
+                 let prefs = (Array.sub values 1 (len - 2)) in
+                 let ballot = Ballot.create weight prefs in
                    Voting (header, [ballot])
        )
 
