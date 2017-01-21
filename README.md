@@ -44,3 +44,11 @@ Having checked out this repository, do:
     $ reference/test_stv.byte --dir test_data
     $ reference/main.byte < test_data/example.blt
 
+
+Coding Style
+============
+
+The reference implementation avoids all advanced features of the OCaml
+language, but does employ some terse abbreviated syntax where
+idiomatic.  Programmers with three or four months' OCaml experience
+should have no trouble following the code.
