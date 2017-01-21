@@ -51,8 +51,6 @@ let extract_name line =
             then String.sub line 1 (len - 2)
             else line
 
-let array_mem needle haystack = haystack |> Array.to_list |> List.mem needle
-
 let create_context () = No_header
 
 let handle_line line = function
@@ -85,7 +83,7 @@ let handle_line line = function
 
   | Candidate_names (candidates, seats, ballots, names) ->
      let new_name = extract_name line in
-       if array_mem new_name names
+       if Utils.array_mem new_name names
        then raise (Duplicate_candidate_name new_name)
        else Candidate_names (candidates, seats, ballots,
                              Array.append names [| new_name |])
