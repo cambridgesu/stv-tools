@@ -88,17 +88,17 @@ let handle_vote line header ballots =
                 Voting (header, ballot :: ballots)
     )
 
+let handle_name line header ballots names =
+  let new_name = extract_name line in
+    if Utils.array_mem new_name names
+    then raise (Duplicate_candidate_name new_name)
+    else Candidate_names (header, ballots,
+                          Array.append names [| new_name |])
+
 let handle_line line line_no = function
   | No_header -> handle_header line
-
-  | Voting (header, ballots) -> handle_vote line header ballots
-
-  | Candidate_names (header, ballots, names) ->
-     let new_name = extract_name line in
-       if Utils.array_mem new_name names
-       then raise (Duplicate_candidate_name new_name)
-       else Candidate_names (header, ballots,
-                             Array.append names [| new_name |])
+  | Voting (hdr, ballots) -> handle_vote line hdr ballots
+  | Candidate_names (hdr, ballots, names) -> handle_name line hdr ballots names
 
 let abend line_no s =
   print_endline s;
