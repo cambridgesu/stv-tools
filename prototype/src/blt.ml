@@ -99,16 +99,24 @@ let check_consistency = function
             else ballots |> List.iter check_size
   | _ -> raise Incomplete
 
+let abend line_no s =
+  print_endline s;
+  Printf.printf "Error occurred at input line %d\n" line_no;
+  exit 1
+
 let process_blt_file input_stream ctx =
   let rec process_blt_file line_no ctx =
     let line =
       try Some (input_line input_stream)
       with End_of_file -> None
     in
-      let line_no' = line_no + 1 in
-        match line with
-        | Some l -> handle_line l line_no' ctx |> process_blt_file line_no'
-        | None -> ctx
+      try
+        let line_no' = line_no + 1 in
+          match line with
+          | Some l -> handle_line l line_no' ctx |> process_blt_file line_no'
+          | None -> ctx
+      with
+        Non_consecutive_prefs -> abend line_no "Non-consecutive preferences"
   in
     process_blt_file 1 ctx
 
