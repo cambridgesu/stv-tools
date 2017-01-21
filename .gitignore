@@ -1,7 +1,7 @@
 _build
 _tags
-main.byte
 myocamlbuild.ml
 setup.data
 setup.log
 setup.ml
+*.byte
