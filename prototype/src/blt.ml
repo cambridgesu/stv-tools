@@ -111,5 +111,5 @@ let tally_of_context ctx =
   | _ -> raise Incomplete
 
 let tally_of_blt_stream input_stream =
-  let ctx = create_context () |> process_blt_file input_stream in
-    tally_of_context ctx
+  create_context () |> process_blt_file input_stream |> tally_of_context
+
