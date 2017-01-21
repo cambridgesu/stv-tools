@@ -61,14 +61,16 @@ let extract_name line =
 
 let create_context () = No_header
 
+let handle_header line =
+  let values = safe_int_array_of_string line in
+    (match values with
+    | [| candidates ; seats |] ->
+       let header = Header.create candidates seats in
+         Voting (header, [])
+    | _ -> raise Invalid_header)
+
 let handle_line line line_no = function
-  | No_header ->
-     let values = safe_int_array_of_string line in
-       (match values with
-       | [| candidates ; seats |] ->
-          let header = Header.create candidates seats in
-            Voting (header, [])
-       | _ -> raise Invalid_header)
+  | No_header -> handle_header line
 
   | Voting (header, ballots) ->
      let values = safe_int_array_of_string line in
