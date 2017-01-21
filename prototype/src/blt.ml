@@ -13,6 +13,7 @@ exception Incomplete
 module Line_of_numbers : sig
 
   val safe_array : string -> int array
+  val list_without_ends : 'a array -> 'a list
 
 end = struct
 
@@ -25,6 +26,10 @@ end = struct
       with Failure _ -> raise Only_ints
     in
       values
+
+  let list_without_ends aa =
+    Array.sub aa 1 (Array.length aa - 2) |> Array.to_list
+
 end
 
 let extract_name line =
@@ -65,7 +70,7 @@ let handle_vote contest ballots line =
          if final <> 0
          then raise No_zero_terminator
          else let weight = values.(0) in
-              let prefs = (Array.sub values 1 (len - 2)) |> Array.to_list in
+              let prefs = Line_of_numbers.list_without_ends values in
               let ballot = Ballot.create contest weight prefs in
                 Voting (contest, ballot :: ballots)
     )
