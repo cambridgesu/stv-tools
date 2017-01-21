@@ -85,13 +85,11 @@ let process_blt_file input_stream =
       try Some (input_line input_stream)
       with End_of_file -> None
     in
-      try
-        let line_no' = line_no + 1 in
-          match line with
-          | Some l -> handle_line l ctx |> process_blt_file line_no'
-          | None -> ctx
-      with
-        Non_consecutive_prefs -> abend line_no "Non-consecutive preferences"
+      try let line_no' = line_no + 1 in
+            match line with
+            | Some l -> handle_line l ctx |> process_blt_file line_no'
+            | None -> ctx
+      with Non_consecutive_prefs -> abend line_no "Non-consecutive preferences"
   in
     process_blt_file 1 initial_ctx
 
