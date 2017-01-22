@@ -11,3 +11,15 @@ let test_load_normal () =
   Blt.tally_of_blt_stream |>
   ignore |>
   assert_equal ()
+
+let load_file filename =
+  get_file filename |>
+  Blt.tally_of_blt_stream |>
+  ignore
+
+let test_load_broken () =
+  [
+    (Invalid_header, "invalid-header.blt");
+  ] |>
+      List.iter (fun (exp, src) ->
+        assert_raises exp (fun () -> load_file src))
