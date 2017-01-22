@@ -7,6 +7,10 @@ let int_array_of_string s =
   Array.of_list
 
 let safe_array s =
+  assert (String.length s > 0);
+  assert (s.[0] <> ' ');
+  assert (s.[String.length s - 1] <> ' ');
+
   try int_array_of_string s
   with Failure _ -> raise Only_ints
 
