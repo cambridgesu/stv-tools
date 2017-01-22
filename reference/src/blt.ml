@@ -10,9 +10,12 @@ exception Duplicate_candidate_name of string
 exception Incomplete
 
 
+let report_err line_no s =
+  Printf.sprintf "%s\nError occurred at input line %d\n" s line_no |>
+  prerr_endline
+
 let abend line_no s =
-  print_endline s;
-  Printf.printf "Error occurred at input line %d\n" line_no;
+  report_err line_no s;
   exit 1
 
 let extract_name line =
@@ -80,7 +83,9 @@ let process_blt_file input_stream =
             match line with
             | Some l -> handle_line l ctx |> process_blt_file line_no'
             | None -> ctx
-      with e -> raise e (* abend line_no "Unspecified error" *)
+      with e -> 
+        (report_err line_no "Unspecified error";
+         raise e) (* abend line_no "Unspecified error" *)
   in
     process_blt_file 1 initial_ctx
 
