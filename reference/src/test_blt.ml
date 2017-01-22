@@ -4,8 +4,7 @@ open OUnit
 let blt_dir = ref "."
 
 let get_file filename =
-  let path = !blt_dir ^ "/" ^ filename in
-    open_in path
+  !blt_dir ^ "/" ^ filename |> open_in
 
 let test_load_normal () =
   get_file "example.blt" |>
