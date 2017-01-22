@@ -1,5 +1,5 @@
 
-(* FIXME: misnomer *)
+exception Invalid_contest
 
 type t = {
   header_candidates : int;
@@ -7,13 +7,12 @@ type t = {
 }
 
 let create candidates seats =
-  assert (candidates > 0);
-  assert (seats > 0);
-  assert (candidates > seats);
-  {
+  if (candidates > 0) && (seats > 0) && (candidates > seats)
+  then {
     header_candidates = candidates;
     header_seats = seats
   }
+  else raise Invalid_contest
 
 let get_totals h =
   (h.header_candidates, h.header_seats)
