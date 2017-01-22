@@ -10,25 +10,18 @@ let test_lon_ends () =
     assert_equal [2; 3] obs'
 
 let test_lon_broken () =
-  let src = "123 024 00 " in
-    assert_raises (Invalid_line_of_numbers)
-      (fun () -> Line_of_numbers.safe_array src);
-
-  let src = "-1 0" in
-  let obs = Line_of_numbers.safe_array src in
-    assert_equal [|-1; 0|] obs;
-
-  let src = "9 9" in
-  let obs = Line_of_numbers.safe_array src in
-    assert_equal [|9; 9|] obs
+  [
+    (Invalid_line_of_numbers, "123 024 00 ");
+  ] |>
+      List.iter (fun (exp, src) ->
+        assert_raises exp (fun () -> Line_of_numbers.safe_array src))
 
 let test_lon_sane () =
-  let exp_src = [
+  [
     ([|1; 2; 3; 4|], "1 2 3 4");
     ([|123; 24; 0|], "123 024 00");
     ([|-1; 0|], "-1 0");
     ([|9; 9|], "9 9");
-  ]
-  in
-    List.iter (fun (exp, src) ->
-      Line_of_numbers.safe_array src |> assert_equal exp) exp_src
+  ] |>
+      List.iter (fun (exp, src) ->
+        Line_of_numbers.safe_array src |> assert_equal exp)
