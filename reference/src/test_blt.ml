@@ -12,9 +12,7 @@ let load_file filename =
   ignore
 
 let test_load_normal () =
-  get_file "example.blt" |>
-  Blt.tally_of_blt_stream |>
-  ignore |>
+  load_file "example.blt" |>
   assert_equal ()
 
 let test_load_broken () =
