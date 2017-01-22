@@ -2,7 +2,9 @@
 exception Only_ints (* string must be space separated ints *)
 
 let int_array_of_string s =
-  List.map int_of_string (Str.split (Str.regexp " ") s) |> Array.of_list
+  Str.split (Str.regexp " ") s |>
+  List.map int_of_string |>
+  Array.of_list
 
 let safe_array s =
   let values =
