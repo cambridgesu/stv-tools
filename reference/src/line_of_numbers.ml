@@ -7,11 +7,8 @@ let int_array_of_string s =
   Array.of_list
 
 let safe_array s =
-  let values =
-    try int_array_of_string s
-    with Failure _ -> raise Only_ints
-  in
-    values
+  try int_array_of_string s
+  with Failure _ -> raise Only_ints
 
 let list_without_ends aa =
   Array.sub aa 1 (Array.length aa - 2) |> Array.to_list
