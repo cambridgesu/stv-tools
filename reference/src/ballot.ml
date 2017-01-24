@@ -61,4 +61,3 @@ let dump_named names b =
   List.iteri (fun i pref ->
     Printf.printf "  %d: %s\n" (i + 1) (List.nth names (pref - 1))
   ) b.ballot_preferences
-  

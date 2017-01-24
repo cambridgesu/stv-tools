@@ -93,7 +93,7 @@ let process_blt_file input_stream =
             match line with
             | Some l -> handle_line l ctx |> process_blt_file line_no'
             | None -> ctx
-      with e -> 
+      with e ->
         (report_err line_no "Unspecified error";
          raise e) (* abend line_no "Unspecified error" *)
   in
