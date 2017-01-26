@@ -11,6 +11,8 @@
 
 type t
 
-val create : Contest.t -> (int * int list) list -> Candidate.t list -> t
+val eq : t -> t -> bool
 
-val dump : t -> unit
+val create : int -> string -> t
+
+val name : t -> string

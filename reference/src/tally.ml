@@ -14,7 +14,7 @@ open Ballot
 type t = {
   total_candidates : int;
   total_seats : int;
-  candidate_names : string list;
+  candidates : Candidate.t list;
   ballots : Ballot.t list;
 }
 
@@ -25,24 +25,24 @@ let check_ballot_size max_size ballot =
   then raise (Too_many_preferences ballot)
   else ()
 
-let check_consistency candidates seats ballots names =
-  let check_size = check_ballot_size candidates in
-    if candidates <= seats
+let check_consistency total_candidates seats ballots candidates =
+  let check_size = check_ballot_size total_candidates in
+    if total_candidates <= seats
     then failwith "Enough seats for all candidates; no need for election"
-    else if List.length names <> candidates
+    else if List.length candidates <> total_candidates
     then failwith "Number of candidates doesn't match names"
     else ballots |> List.iter check_size
 
-let create contest ballot_infos names =
-  let candidates, seats = Contest.get_totals contest in
+let create contest ballot_infos (candidates : Candidate.t list) =
+  let total_candidates, seats = Contest.get_totals contest in
   let ballots =
     ballot_infos |> 
     List.map (fun (weight, prefs) -> Ballot.create contest weight prefs) in
-    check_consistency candidates seats ballots names;
+    check_consistency total_candidates seats ballots candidates;
     {
-      total_candidates = candidates;
+      total_candidates = total_candidates;
       total_seats = seats;
-      candidate_names = names;
+      candidates = candidates;
       ballots = ballots;
     }
 
@@ -50,7 +50,9 @@ let dump tally =
   Printf.printf "Seats: %d; Candidates: %d\n\nCandidate names:\n"
     tally.total_seats tally.total_candidates;
 
-  List.iteri (fun i name -> Printf.printf " %d. %s\n" (i + 1) name)
-    tally.candidate_names;
+  List.iteri (fun i c -> let name = Candidate.name c in
+                           Printf.printf " %d. %s\n" (i + 1) name)
+    tally.candidates;
 
-  List.iter (fun b -> Ballot.dump_named tally.candidate_names b) tally.ballots
+  let names = List.map Candidate.name tally.candidates in
+    List.iter (fun b -> Ballot.dump_named names b) tally.ballots

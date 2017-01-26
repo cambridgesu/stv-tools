@@ -9,8 +9,16 @@
   (at your option) any later version.
 *)
 
-type t
+type t = {
+  cand_position : int;
+  cand_name : string
+}
 
-val create : Contest.t -> (int * int list) list -> Candidate.t list -> t
+let eq a b = a.cand_position = b.cand_position
 
-val dump : t -> unit
+let create pos name = {
+  cand_position = pos;
+  cand_name = name;
+}
+
+let name c = c.cand_name

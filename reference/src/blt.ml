@@ -100,13 +100,12 @@ let process_blt_file input_stream =
   in
     process_blt_file 1 initial_ctx
 
-
-let all_but_last l =
-  List.rev l |> List.tl |> List.rev
-
 let make_tally contest ballot_infos all_names =
-  let names = all_but_last all_names in
-  let candidates = List.rev names in
+  let names = List.tl all_names in
+  let candidates =
+    List.rev names |>
+    List.mapi (fun idx name -> Candidate.create (idx + 1) name)  
+  in
     Tally.create contest (List.rev ballot_infos) candidates
 
 let tally_of_context = function
