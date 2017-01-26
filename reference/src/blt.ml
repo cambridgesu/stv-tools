@@ -106,7 +106,8 @@ let all_but_last l =
 
 let make_tally contest ballot_infos all_names =
   let names = all_but_last all_names in
-    Tally.create contest (List.rev ballot_infos) (List.rev names)
+  let candidates = List.rev names in
+    Tally.create contest (List.rev ballot_infos) candidates
 
 let tally_of_context = function
   | Candidate_names (contest, ballot_infos, names) ->
