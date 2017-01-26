@@ -40,7 +40,7 @@ let check_preferences contest prefs =
     then ()
     else raise Duplicate_prefs
 
-let create contest weight prefs =
+let create contest candidates weight prefs =
   check_preferences contest prefs;
   {
     ballot_weight = weight;

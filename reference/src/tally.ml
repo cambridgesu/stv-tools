@@ -33,11 +33,13 @@ let check_consistency total_candidates seats ballots candidates =
     then failwith "Number of candidates doesn't match names"
     else ballots |> List.iter check_size
 
-let create contest ballot_infos (candidates : Candidate.t list) =
+let create contest ballot_infos candidates =
   let total_candidates, seats = Contest.get_totals contest in
   let ballots =
     ballot_infos |> 
-    List.map (fun (weight, prefs) -> Ballot.create contest weight prefs) in
+    List.map (fun (weight, prefs) ->
+      Ballot.create contest candidates weight prefs)
+  in
     check_consistency total_candidates seats ballots candidates;
     {
       total_candidates = total_candidates;
