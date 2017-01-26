@@ -33,20 +33,16 @@ let check_consistency candidates seats ballots names =
     then failwith "Number of candidates doesn't match names"
     else ballots |> List.iter check_size
 
-let all_but_last l =
-  List.rev l |> List.tl |> List.rev
-
 let create contest ballot_infos names =
   let candidates, seats = Contest.get_totals contest in
   let ballots =
     ballot_infos |> 
     List.map (fun (weight, prefs) -> Ballot.create contest weight prefs) in
-  let names' = all_but_last names in
-    check_consistency candidates seats ballots names';
+    check_consistency candidates seats ballots names;
     {
       total_candidates = candidates;
       total_seats = seats;
-      candidate_names = names';
+      candidate_names = names;
       ballots = ballots;
     }
 
