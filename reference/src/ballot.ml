@@ -11,7 +11,7 @@
 
 type t = {
   ballot_weight : int;
-  ballot_preferences : int list
+  ballot_preferences : Candidate.t list
 }
 
 exception Duplicate_prefs
@@ -41,11 +41,12 @@ let check_preferences contest prefs =
     else raise Duplicate_prefs
 
 let create contest candidates weight prefs =
-  check_preferences contest prefs;
-  {
-    ballot_weight = weight;
-    ballot_preferences = prefs
-  }
+  let lookup_candidate n = List.nth candidates (n - 1) in
+    check_preferences contest prefs;
+    {
+      ballot_weight = weight;
+      ballot_preferences = List.map lookup_candidate prefs
+    }
 
 let total_preferences b =
   List.length b.ballot_preferences
@@ -53,11 +54,11 @@ let total_preferences b =
 let dump b =
   Printf.printf "\nBallot weight: %d\n\n" b.ballot_weight;
   List.iteri (fun i pref ->
-    Printf.printf "  %d: Option %d\n" (i + 1) pref
+    Printf.printf "  %d: Option %d\n" (i + 1) (Candidate.position pref)
   ) b.ballot_preferences
 
 let dump_named names b =
   Printf.printf "\nBallot weight: %d\n\n" b.ballot_weight;
   List.iteri (fun i pref ->
-    Printf.printf "  %d: %s\n" (i + 1) (List.nth names (pref - 1))
+    Printf.printf "  %d: %s\n" (i + 1) (Candidate.name pref)
   ) b.ballot_preferences

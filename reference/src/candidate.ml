@@ -22,3 +22,5 @@ let create pos name = {
 }
 
 let name c = c.cand_name
+
+let position c = c.cand_position

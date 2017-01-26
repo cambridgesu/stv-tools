@@ -16,3 +16,5 @@ val eq : t -> t -> bool
 val create : int -> string -> t
 
 val name : t -> string
+
+val position : t -> int
