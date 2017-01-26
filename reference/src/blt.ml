@@ -36,11 +36,12 @@ let extract_name line =
     then String.sub line 1 (len - 2)
     else line
 
+type ballot_info = (int * int list)
 
 type blt_ctx =
   | No_header
-  | Voting of Contest.t * Ballot.t list
-  | Candidate_names of Contest.t * Ballot.t list * string list
+  | Voting of Contest.t * ballot_info list
+  | Candidate_names of Contest.t * ballot_info list * string list
 
 let create_context () = No_header
 
@@ -67,15 +68,15 @@ let handle_vote contest ballots line =
          then raise No_zero_terminator
          else let weight = values.(0) in
               let prefs = Line_of_numbers.list_without_ends values in
-              let ballot = Ballot.create contest weight prefs in
-                Voting (contest, ballot :: ballots)
+              let ballot_info = (weight, prefs) in
+                Voting (contest, ballot_info :: ballots)
     )
 
-let handle_name contest ballots names line =
+let handle_name contest ballot_infos names line =
   let new_name = extract_name line in
     if List.mem new_name names
     then raise (Duplicate_candidate_name new_name)
-    else Candidate_names (contest, ballots, new_name :: names)
+    else Candidate_names (contest, ballot_infos, new_name :: names)
 
 let handle_line line = function
   | No_header -> handle_header line
@@ -99,10 +100,12 @@ let process_blt_file input_stream =
   in
     process_blt_file 1 initial_ctx
 
-let tally_of_context ctx =
-  match ctx with
-  | Candidate_names (contest, ballots, names) ->
-     Tally.create contest (List.rev ballots) (List.rev names)
+let make_tally contest ballot_infos all_names =
+  Tally.create contest (List.rev ballot_infos) (List.rev all_names)
+
+let tally_of_context = function
+  | Candidate_names (contest, ballot_infos, names) ->
+     make_tally contest ballot_infos names
   | _ -> raise Incomplete
 
 let tally_of_blt_stream input_stream =
