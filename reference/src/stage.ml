@@ -34,19 +34,15 @@ some of the key invariants are:
 *)
 
 type t = {
-  previous : t list;
   candidacies : (Candidate.t * Status.t) list;
-  seats : int;
+  tally : Tally.t;
 }
 
-let example = {
-  previous = [];
-  candidacies = [];
-  seats = 2;
-}
-
-let initial whatever =
-  example
+let initial tally =
+  {
+    candidacies = [];
+    tally = tally;
+  }
 
 let next old_stage event = old_stage
 
