@@ -46,6 +46,8 @@ let verify_stage stage =
   assert true;
   stage
 
+(* API from here down *)
+
 let initial tally =
   {
     candidacies = [];
