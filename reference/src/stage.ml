@@ -38,7 +38,11 @@ type t = {
   tally : Tally.t;
 }
 
-let verify stage =
+let verify_transition old_stage stage =
+  assert true;
+  stage
+
+let verify_stage stage =
   assert true;
   stage
 
@@ -46,6 +50,10 @@ let initial tally =
   {
     candidacies = [];
     tally = tally;
-  } |> verify
+  }
+  |> verify_stage
 
-let next old_stage event = old_stage |> verify
+let next old_stage event =
+  old_stage
+  |> verify_transition old_stage
+  |> verify_stage
