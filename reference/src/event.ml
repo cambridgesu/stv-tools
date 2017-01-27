@@ -10,7 +10,7 @@
 *)
 
 type t =
-  | Elected
-  | Excluded
-  | Distribute_surplus
-  | Distribute_excluded
+  | Elected of Candidate.t
+  | Excluded of Candidate.t
+  | Distribute_surplus of Candidate.t
+  | Distribute_excluded of Candidate.t
