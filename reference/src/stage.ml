@@ -38,13 +38,14 @@ type t = {
   tally : Tally.t;
 }
 
+let verify stage =
+  assert true;
+  stage
+
 let initial tally =
   {
     candidacies = [];
     tally = tally;
-  }
+  } |> verify
 
-let next old_stage event = old_stage
-
-let consistent stage =
-  true
+let next old_stage event = old_stage |> verify
