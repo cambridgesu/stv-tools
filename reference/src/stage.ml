@@ -34,13 +34,11 @@ some of the key invariants are:
 *)
 
 type t = {
-  x : int;
   previous : t list;
   elected_candidates : int;
 }
 
 let example = {
-  x = 3;
   previous = [];
   elected_candidates = 0;
 }
