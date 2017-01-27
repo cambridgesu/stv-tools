@@ -35,12 +35,12 @@ some of the key invariants are:
 
 type t = {
   previous : t list;
-  elected_candidates : int;
+  candidacies : (Candidate.t * Status.t) list
 }
 
 let example = {
   previous = [];
-  elected_candidates = 0;
+  candidacies = [];
 }
 
 let initial whatever =
