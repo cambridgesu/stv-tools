@@ -16,7 +16,7 @@ type t = {
 
 exception Duplicate_prefs
 exception Non_positive_pref of int
-exception No_such_candidate of int
+exception No_such_candidate of int * int
 
 let rec no_duplicates = function
   | [] -> true
@@ -28,8 +28,10 @@ let rec no_duplicates = function
 let check_preferences contest prefs =
   let max_candidate, _ = Contest.get_totals contest in
     prefs |> List.iter (
-      fun pref -> if pref > max_candidate then raise (No_such_candidate pref)
-          else ()
+      fun pref -> 
+        if pref > max_candidate
+        then raise (No_such_candidate (pref, max_candidate))
+        else ()
     );
 
     prefs |> List.iter (
