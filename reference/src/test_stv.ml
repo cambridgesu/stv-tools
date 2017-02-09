@@ -19,6 +19,7 @@ let suite =
       "test line of broken numbers" >:: Test_line_of_numbers.test_lon_broken;
       "test normal blt load" >:: Test_blt.test_load_normal;
       "test broken blt loads" >:: Test_blt.test_load_broken;
+      "test known good blts" >:: Test_blt.test_load_good_samples;
     ]
 
 let run () = run_test_tt_main suite

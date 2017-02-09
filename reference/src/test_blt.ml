@@ -32,3 +32,26 @@ let test_load_broken () =
   ] |>
       List.iter (fun (exp, src) ->
         assert_raises exp (fun () -> load_file src))
+
+let files_in_directory dirpath =
+  let dh = Unix.opendir dirpath in
+  let rec files_in_directory acc =
+    try
+      Unix.readdir dh |> function 
+      | "."
+      | ".." -> files_in_directory acc
+      | filename -> files_in_directory (filename :: acc)
+    with
+      | End_of_file -> acc
+  in
+    files_in_directory []
+
+let test_load_good_samples () =
+  let dir = !blt_dir ^ "/blt-format/should-pass/" in
+  files_in_directory dir |>
+    List.iter (fun filename ->
+      dir ^ filename |>
+      open_in |>
+      Blt.tally_of_blt_stream |> ignore |>
+      assert_equal ()
+      )
