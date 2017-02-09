@@ -18,7 +18,7 @@ exception Empty_line
 exception Invalid_stop_code
 exception Duplicate_candidate_name of string
 exception Incomplete
-
+exception Withdrawals_not_supported
 
 let report_err line_no s =
   Printf.sprintf "%s\nError occurred at input line %d\n" s line_no |>
@@ -62,6 +62,8 @@ let handle_vote contest ballots line =
        if values.(0) = 0
        then Candidate_names (contest, ballots, [])
        else raise Invalid_stop_code
+    | n when n < 0 ->
+       raise Withdrawals_not_supported
     | _ ->
        let final = values.(len - 1) in
          if final <> 0
