@@ -38,12 +38,51 @@ type t = {
   tally : Tally.t;
 }
 
+let continuing_candidates stage =
+  (List.filter (fun (cand, status) -> Status.is_continuing status)
+     stage.candidacies) |> List.map fst
+
 let ballots_by_continuing_candidates stage =
-  let continuing_candidates =
-    (List.filter (fun (cand, status) -> Status.is_continuing status)
-      stage.candidacies) |> List.map fst
+  let candidates = continuing_candidates stage in
+    Tally.by_preferred_candidate candidates stage.tally
+
+(* FIXME: don't use mutable data structure even temporarily,
+          and just use fold for the whole thing in the meantime *)
+let ballot_totals_by_continuing_candidates stage =
+  let assoc_of_hashtbl tbl =
+    Hashtbl.fold (fun k v acc -> (k, v) :: acc) tbl []
   in
-    Tally.by_preferred_candidate continuing_candidates stage.tally
+  let preferences = ballots_by_continuing_candidates stage in
+  let totals : (Candidate.t option, int) Hashtbl.t = Hashtbl.create 5 in
+    List.iter (fun (weight, candidate) ->
+    (try
+       let current_total = Hashtbl.find totals candidate in
+         Hashtbl.replace totals candidate (current_total + weight)
+     with Not_found ->
+       Hashtbl.replace totals candidate weight))
+      preferences;
+    assoc_of_hashtbl totals      
+
+let string_of_candidate_option = function
+  | None -> "Exhausted"
+  | Some c -> Candidate.name c
+
+let dump_stage stage =
+  ballots_by_continuing_candidates stage |>
+  List.iter (fun (weight, top_pref) ->
+    print_int weight; print_string " ";
+    match top_pref with
+      | None -> print_endline "None"
+      | Some c -> print_endline (Candidate.name c)
+  );
+
+  ballot_totals_by_continuing_candidates stage |>
+  List.map (fun (c, total) ->
+    (string_of_candidate_option c) ^ ": " ^ (string_of_int total)
+  )
+  |> List.iter print_endline;
+
+  stage
 
 let make_new_stage event old_stage =
   old_stage
@@ -68,6 +107,7 @@ let initial tally =
           List.map (fun c -> (c, continuing));
       tally = tally;
     }
+  |> dump_stage
   |> verify_stage
 
 let next old_stage event =
