@@ -84,8 +84,16 @@ let dump_stage stage =
 
   stage
 
+let elected stage candidate =
+  stage
+
+let make_new_stage old_stage = function
+  | Event.Elected c -> elected old_stage c
+  | _ -> old_stage
+
+(* FIXME: can't agree about which way round the args go *)
 let make_new_stage event old_stage =
-  old_stage
+  make_new_stage old_stage event
 
 let is_valid stage =
   true
