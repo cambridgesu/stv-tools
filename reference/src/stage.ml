@@ -85,7 +85,18 @@ let dump_stage stage =
   stage
 
 let elected stage candidate =
-  stage
+  let status = List.assq candidate stage.candidacies in
+  let new_status = Status.declare_elected status in
+  let other_candidacies = List.filter (fun (c, s) ->
+    c != candidate
+  ) stage.candidacies
+  in
+  let new_candidacies = (candidate, new_status) :: other_candidacies in
+    assert ((List.length stage.candidacies) = (List.length new_candidacies));
+    {
+      candidacies = new_candidacies;
+      tally = stage.tally
+    }
 
 let make_new_stage old_stage = function
   | Event.Elected c -> elected old_stage c
