@@ -61,7 +61,7 @@ let ballot_totals_by_continuing_candidates stage =
      with Not_found ->
        Hashtbl.replace totals candidate weight))
       preferences;
-    assoc_of_hashtbl totals      
+    assoc_of_hashtbl totals
 
 let string_of_candidate_option = function
   | None -> "Exhausted"
