@@ -64,3 +64,12 @@ let dump_named names b =
   List.iteri (fun i pref ->
     Printf.printf "  %d: %s\n" (i + 1) (Candidate.name pref)
   ) b.ballot_preferences
+
+let preferred_candidate continuing_candidates b =
+  let matches pref = List.mem pref continuing_candidates in
+  let matching_preferences = List.filter matches b.ballot_preferences in
+  let best_preference = match matching_preferences with
+      | [] -> None
+      | top_pref :: _ -> Some top_pref
+  in
+    (b.ballot_weight, best_preference)

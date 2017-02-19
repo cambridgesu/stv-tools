@@ -13,6 +13,8 @@ type t
 
 val create : unit -> t
 
+val is_continuing : t -> bool
+
 val declare_elected : t -> t
 
 val declare_eliminated : t -> t

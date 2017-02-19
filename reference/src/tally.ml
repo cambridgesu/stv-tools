@@ -61,3 +61,7 @@ let dump tally =
 
 let candidates tally =
   tally.candidates
+
+let by_preferred_candidate continuing_candidates tally =
+  List.map (fun b -> Ballot.preferred_candidate continuing_candidates b)
+    tally.ballots

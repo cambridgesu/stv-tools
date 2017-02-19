@@ -17,3 +17,4 @@ val create : Contest.t -> Candidate.t list -> int -> int list -> t
 val total_preferences : t -> int
 val dump : t -> unit
 val dump_named : string list -> t -> unit
+val preferred_candidate : Candidate.t list -> t -> (int * Candidate.t option)

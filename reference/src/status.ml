@@ -16,6 +16,10 @@ type t =
 
 let create () = Continuing
 
+let is_continuing = function
+  | Continuing -> true
+  | _ -> false
+
 let declare_elected = function
   | Continuing -> Elected
   | _ -> assert false

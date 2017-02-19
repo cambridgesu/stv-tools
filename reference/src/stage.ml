@@ -38,18 +38,25 @@ type t = {
   tally : Tally.t;
 }
 
+let ballots_by_continuing_candidates stage =
+  let continuing_candidates =
+    (List.filter (fun (cand, status) -> Status.is_continuing status)
+      stage.candidacies) |> List.map fst
+  in
+    Tally.by_preferred_candidate continuing_candidates stage.tally
+
 let make_new_stage event old_stage =
   old_stage
 
 let is_valid stage =
   true
 
-let verify_transition old_stage stage =
+let verify_transition old_stage new_stage =
   assert (is_valid old_stage);
-  stage
+  new_stage
 
 let verify_stage stage =
-  assert true;
+  assert (is_valid stage);
   stage
 
 (* API from here down *)
