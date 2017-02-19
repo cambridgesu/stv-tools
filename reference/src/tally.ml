@@ -58,3 +58,6 @@ let dump tally =
 
   let names = List.map Candidate.name tally.candidates in
     List.iter (fun b -> Ballot.dump_named names b) tally.ballots
+
+let candidates tally =
+  tally.candidates

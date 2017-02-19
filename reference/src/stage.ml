@@ -38,8 +38,14 @@ type t = {
   tally : Tally.t;
 }
 
+let make_new_stage event old_stage =
+  old_stage
+
+let is_valid stage =
+  true
+
 let verify_transition old_stage stage =
-  assert true;
+  assert (is_valid old_stage);
   stage
 
 let verify_stage stage =
@@ -49,13 +55,16 @@ let verify_stage stage =
 (* API from here down *)
 
 let initial tally =
-  {
-    candidacies = [];
-    tally = tally;
-  }
+  let continuing = Status.create () in
+    {
+      candidacies = Tally.candidates tally |>
+          List.map (fun c -> (c, continuing));
+      tally = tally;
+    }
   |> verify_stage
 
 let next old_stage event =
-  old_stage
+  verify_stage old_stage
+  |> make_new_stage event
   |> verify_transition old_stage
   |> verify_stage

@@ -13,4 +13,6 @@ type t
 
 val create : Contest.t -> (int * int list) list -> Candidate.t list -> t
 
+val candidates : t -> Candidate.t list
+
 val dump : t -> unit
