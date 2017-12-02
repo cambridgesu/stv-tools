@@ -1,0 +1,19 @@
+Ballot.t : a vote or votes for a particular ranked set of options; contains
+           a weighting, which if greater than 1 represents the possibility
+           that 2 or more electors voted exactly the same way
+
+Contest.t : the parameters of an election: total number of candidates
+            and seats to fill
+
+Event.t : a transition between two stages of the count, such as the
+          elimination of a particular candidate
+
+Tally.t : the state of an election before the counting begins, comprising the
+          set of all ballots, and the list of candidates; given a member of
+          this type, the election's results can be counted; contains the
+          same information as a BLT file
+
+Stage.t : a stage in the election count; given a Stage.t, the engine should
+          be able to work out what Event.t happens next, and what new Stage.t
+          would be the result
+
