@@ -12,6 +12,8 @@
 let run () =
   let tally = Blt.tally_of_blt_stream stdin in
     Tally.dump tally;
-    ignore (Stage.initial tally)
+    let st = Stage.initial tally in
+    let ev = Stage.resultant_event st in
+      Event.string_of ev |> print_endline
 
 let () = run ()

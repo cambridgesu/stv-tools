@@ -14,3 +14,9 @@ type t =
   | Excluded of Candidate.t
   | Distribute_surplus of Candidate.t
   | Distribute_excluded of Candidate.t
+
+let string_of = function
+  | Elected e -> "elected"
+  | Excluded e -> "excluded"
+  | Distribute_surplus cc -> "distribute-surplus"
+  | Distribute_excluded cc -> "distribute-excluded"

@@ -38,6 +38,14 @@ type t = {
   tally : Tally.t;
 }
 
+(* FIXME: dummy implementation *)
+let resultant_event st =
+  match st.candidacies with
+    | [] -> assert false (* FIXME *)
+    | (cand, status) :: tl -> Event.Excluded cand
+
+(* code above this line existed before the engine was moved into this file *)
+
 let continuing_candidates stage =
   (List.filter (fun (cand, status) -> Status.is_continuing status)
      stage.candidacies) |> List.map fst
